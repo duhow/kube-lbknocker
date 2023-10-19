@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-lbknocker
+  labels:
+    app.kubernetes.io/name: kube-lbknocker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kube-lbknocker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kube-lbknocker
+    spec:
+      containers:
+      - name: app
+        image: test:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: KUBERNETES_SERVICE_NAME
+          value: salt-master
+        ports:
+        - name: http
+          containerPort: 5000
+        resources: {}
