@@ -42,7 +42,10 @@ if not service:
 @app.route('/allowme', methods=['GET'])
 def allowme():
     # Get the client IP address from the request.
-    client_ip = request.remote_addr + "/32"
+    client_ip = request.remote_addr + "32"
+
+    if request.headers.getlist("X-Forwarded-For"):
+        client_ip = request.headers.getlist("X-Forwarded-For")[0] + "/32"
 
     if is_private_address(client_ip):
         return "Invalid source address", 401
